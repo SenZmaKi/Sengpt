@@ -14,6 +14,7 @@
 </p>
 
  [![tests](https://github.com/SenZmaKi/Sengpt/actions/workflows/test.yml/badge.svg)](https://github.com/SenZmaKi/Sengpt/actions/workflows/test.yml)
+<img align="center" src=".github/images/example.png" alt="example">
 ## Installation
 
 Ensure you have [Python 3.11](https://www.python.org/downloads/release/python-3111) and [Glow](https://github.com/charmbracelet/glow) installed.
@@ -85,6 +86,14 @@ Either `gpt-3.5` or `gpt-4` can be used, the default is `gpt-3.5`. `gpt-4` requi
 ```json
 {
   "model": "gpt-4"
+}
+```
+
+### Username
+How your username appears in the conversation, the default is `You`.
+```json
+{
+  "username": "Sen"
 }
 ```
 
