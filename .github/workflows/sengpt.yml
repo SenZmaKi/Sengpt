@@ -1,8 +1,12 @@
 name: Install, lint and run tests
-on: [push, pull]
-branches:
-  - master
-  
+on:             
+  push:         
+    branches:   
+      - master  
+                
+  pull_request: 
+    branches:   
+      - master    
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,4 +31,4 @@ jobs:
         run: poetry run ruff --fix .
 
       - name: Run Tests
-          run: poetry run pytest sengpt\re_gpt\async_\test.py -v
+        run: poetry run pytest sengpt/re_gpt/async_/test.py -v
