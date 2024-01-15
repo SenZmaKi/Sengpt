@@ -44,7 +44,7 @@ async def test_new_conversation(
         async for m in convo.prompt(GPT_PROMPT):
             if delete_convo:
                 fancy_shmansy_print(m.content)
-                await convo.delete()
+        await convo.delete()
     return convo, g
 
 
