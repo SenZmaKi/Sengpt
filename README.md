@@ -42,7 +42,7 @@ pip install sengpt
   "preconfigured_prompts": {
     "readme": "generate a README.md for this",
     "expain": "briefly explain what this code does",
-    "refactor": "refactor this code to imporve readability"
+    "refactor": "refactor this code to improve readability"
   }
 }
 ```
@@ -155,7 +155,5 @@ poetry build
 ```
 
 - The `tar` and `wheel` will be built at `Sengpt/dist`
-
-```
 
 ```
