@@ -1,4 +1,4 @@
-name: Install, lint and run tests
+name: tests
 on:             
   push:         
     branches:   
