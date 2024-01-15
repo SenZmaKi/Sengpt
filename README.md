@@ -134,25 +134,19 @@ Ensure you have [Python 3.11](https://www.python.org/downloads/release/python-31
 1. **Set everything up.**
 
 ```
-
 git clone https://github.com/SenZmaKi/Sengpt && cd Sengpt && pip install poetry && poetry install
-
 ```
 
 2. **Run Sengpt.**
 
 ```
-
 poetry run sengpt
-
 ```
 
 3. **Build the package to install with pip**.
 
 ```
-
 poetry build
-
 ```
 
 - The `tar` and `wheel` will be built at `Sengpt/dist`
