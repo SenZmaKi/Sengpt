@@ -28,7 +28,7 @@ jobs:
           poetry install
 
       - name: Lint with ruff
-        run: poetry run ruff --fix .
+        run: poetry run ruff .
 
       - name: Run Tests
         env:
