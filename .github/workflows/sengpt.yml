@@ -1,34 +1,30 @@
 name: Install, lint and run tests
-on:
-  push:
-    branches:
-      - master
+on: [push, pull]
+branches:
+  - master
+  
+jobs:
+  test:
+    runs-on: ubuntu-latest
 
-  pull_request:
-    branches:
-      - master
-  jobs:
-    test:
-      runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
 
-        - name: Set up Python
-          uses: actions/setup-python@v4
-          with:
-            python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+          poetry install --group dev
 
-        - name: Install dependencies
-          run: |
-            python -m pip install --upgrade pip
-            pip install poetry
-            poetry install
-            poetry install --group dev
+      - name: Lint with ruff
+        run: poetry run ruff --fix .
 
-        - name: Lint with ruff
-          run: poetry run ruff --fix .
-
-        - name: Run Tests
+      - name: Run Tests
           run: poetry run pytest sengpt\re_gpt\async_\test.py -v
