@@ -1,0 +1,8 @@
+.venv/
+.git/
+__pycache__/
+.ruff_cache/
+.pytest_cache/
+funcaptcha_bin/
+dist/
+.env
