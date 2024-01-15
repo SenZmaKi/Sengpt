@@ -3,7 +3,7 @@
 </h1>
 <p align="center">
   ChatGPT in your terminal, runs on  
-  <a href="https://github.com/Zai-Kun/reverse-engineered-chatgpt">re-gpt</a> so no OpenAI API key required.
+  <a href="https://github.com/Zai-Kun/reverse-engineered-chatgpt">re-gpt</a> so no OpenAI API key required
 </p>
 <p align="center">
 <p align="center">
@@ -13,6 +13,7 @@
   <a href="#building-from-source">Building from source</a>
 </p>
 
+ [![tests](https://github.com/SenZmaKi/Sengpt/actions/workflows/test.yml/badge.svg)](https://github.com/SenZmaKi/Sengpt/actions/workflows/test.yml)
 ## Installation
 
 Ensure you have [Python 3.11](https://www.python.org/downloads/release/python-3111) and [Glow](https://github.com/charmbracelet/glow) installed.
@@ -27,29 +28,29 @@ pip install sengpt
 
 - Go to https://chat.openai.com and log in or sign up.
 - Open the browser developer tools (right click and click "inspect" or "inspect element").
-- Go to the Application tab and expand the Cookies section.
+- Go to the Application tab (try expanding the dev tools window if you can't find it) and expand the Cookies section.
 - Look for https://chat.openai.com.
 - Copy the value for \_\_Secure-next-auth.session-token.
 - Run `sengpt --session_token <your-session-token-goes-here>`.
 
 ### Preconfigured prompts
 
-- Open the config file, run `sengpt --config_file` to see it's location
-- Add field named `preconfigured_prompts` and set it's value to key value pairs of prompt name and value e.g.,
+- Open the config file, run `sengpt --config_file` to see it's location.
+- Add a field named `preconfigured_prompts` and set it's value to key value pairs of prompt name and value e.g.,
 
 ```json
 {
   "preconfigured_prompts": {
-    "readme": "generate a README.md for this",
+    "readme": "generate a README.md for this project",
     "expain": "briefly explain what this code does",
     "refactor": "refactor this code to improve readability"
   }
 }
 ```
 
-- To pass the prompt run `sengpt --prompt_name` or `sengpt -pn`
-- Warning!!! Make sure the short version of the prompt name don't clash with each other or with any of sengpt's default flags.
-- The preconfigured prompts are appended e.g., `some_project.py | sengpt --readme make it as brief as possible`
+- To pass the prompt run `sengpt --prompt_name` or `sengpt -pn`.
+- Warning!!! Make sure the short version of the prompt name doesn't clash with each other or with any of sengpt's default flags, i.e., a prompt name like `script_tags` will clash with `session_token` so every time you try and use it sengpt will think you want to set your session token.
+- The preconfigured prompts are appended to the final prompt i.e., `some_project.py | sengpt --readme make it as brief as possible`
 
 ### Modes
 
@@ -79,7 +80,7 @@ With this configuration to use interactive mode run `sengpt --interactive`
 
 ### Models
 
-Either `gpt-3.5` or `gpt-4` can be used, the default is `gpt-3.5`. `gpt-4` requires a ChatGPT Plus account and is slower.
+Either `gpt-3.5` or `gpt-4` can be used, the default is `gpt-3.5`. `gpt-4` requires a ChatGPT Plus account and is slower. To switch to `gpt-4` add this in your config file.
 
 ```json
 {
@@ -91,7 +92,7 @@ Either `gpt-3.5` or `gpt-4` can be used, the default is `gpt-3.5`. `gpt-4` requi
 
 ```
 
-Usage: senpgt [prompt] [options]
+Usage: sengpt [prompt] [options]
 
 -h, --help Show help message and exit
 -v, --version Show the version information
@@ -155,5 +156,3 @@ poetry build
 ```
 
 - The `tar` and `wheel` will be built at `Sengpt/dist`
-
-```
