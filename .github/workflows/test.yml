@@ -9,6 +9,7 @@ on:
       - master    
 jobs:
   test:
+    environment: test
     runs-on: ubuntu-latest
 
     steps:
@@ -30,4 +31,7 @@ jobs:
         run: poetry run ruff --fix .
 
       - name: Run Tests
+        env:
+          SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
+          CONVERSATION_ID: ${{ secrets.CONVERSATION_ID }}
         run: poetry run pytest sengpt/re_gpt/async_/test.py -v
