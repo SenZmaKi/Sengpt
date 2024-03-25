@@ -1,3 +1,5 @@
+<h1 align="center">Developer's Note</h1>
+<p align="center">Sengpt is currently not working cause <a href="https://github.com/Zai-Kun/reverse-engineered-chatgpt">re-gpt</a> has some issues, working on a solution</p>
 <h1 align="center">
  Sengpt
 </h1>
@@ -34,8 +36,8 @@ pip install sengpt
 
 ### Preconfigured prompts
 
-- Open the config file, run `sengpt --config_file` to see it's location.
-- Add a field named `preconfigured_prompts` and set it's value to key value pairs of prompt name and value e.g.,
+- Open the config file, run `sengpt --config_file` to see its location.
+- Add a field named `preconfigured_prompts` and set its value to key value pairs of prompt name and value e.g.,
 
 ```json
 {
