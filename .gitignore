@@ -1,6 +1,7 @@
 .venv/
 .git/
 __pycache__/
+.scraps/
 .ruff_cache/
 .pytest_cache/
 funcaptcha_bin/

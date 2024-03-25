@@ -161,13 +161,14 @@ async def fetch_prompt_response(prompt: str, conversation: AsyncConversation) ->
     event = asyncio.Event()
     loading_task = asyncio.create_task(loading_animation(event))
     async for resp_json in conversation.chat(prompt):
+        content = resp_json["content"]
         if PRINT_WITH_GLOW:
-            prompt_response += resp_json["content"]
+            prompt_response += content
             continue
         if not event.is_set():
             event.set()
             await loading_task
-        print(resp_json, end="", flush=True)
+        print(content, end="", flush=True)
     if PRINT_WITH_GLOW:
         event.set()
         await loading_task
