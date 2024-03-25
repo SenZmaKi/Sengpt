@@ -1,5 +1,3 @@
-<h1 align="center">Developer's Note</h1>
-<p align="center">Sengpt is currently not working cause <a href="https://github.com/Zai-Kun/reverse-engineered-chatgpt">re-gpt</a> has some issues, working on a solution</p>
 <h1 align="center">
  Sengpt
 </h1>
@@ -15,6 +13,7 @@
   <a href="#building-from-source">Building from source</a>
 </p>
 
+<img align="center" src="https://raw.githubusercontent.com/SenZmaKi/Sengpt/master/.github/images/example.png" alt="example">
 ## Installation
 
 Ensure you have [Python 3.11](https://www.python.org/downloads/release/python-3111) and [Glow](https://github.com/charmbracelet/glow) installed.
