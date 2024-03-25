@@ -1,3 +1,4 @@
+
 import sys
 
 from sengpt.argparser import SYS_ARGS
@@ -99,4 +100,3 @@ class Config:
     delete = get_from_json_config("delete", False, json)
     copy = get_from_json_config("copy", False, json)
     default_mode = get_from_json_config("default_mode", "interactive", json)
-

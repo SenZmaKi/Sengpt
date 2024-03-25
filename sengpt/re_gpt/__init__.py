@@ -1,1 +1,2 @@
-# async_ instead of async cause python recognizes async as a keyword
+from .async_chatgpt import AsyncChatGPT
+from .sync_chatgpt import SyncChatGPT

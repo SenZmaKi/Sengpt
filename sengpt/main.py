@@ -2,18 +2,20 @@ import asyncio
 from typing import NoReturn, cast
 from curl_cffi.requests.errors import RequestsError
 from curl_cffi.requests.session import AsyncSession
-from .re_gpt.async_.conversation import Conversation
-from .re_gpt.models import Model
-from .re_gpt.async_.chatgpt import ChatGPT
-from .re_gpt.errors import InvalidSessionToken
+from .re_gpt import AsyncChatGPT
 import sys
 import subprocess
+
+from .re_gpt.async_chatgpt import AsyncConversation
+from .re_gpt.errors import UnexpectedResponseError
+from .re_gpt.sync_chatgpt import InvalidSessionToken
 from .utils import (
     REPO_TAGS_URL,
     GLOW_INSTALLATION_URL,
     V_VERSION,
     OsUtils,
     check_repo_print,
+    print_and_exit,
 )
 from .config import Config
 from .argparser import ArgParser, SYS_ARGS
@@ -41,7 +43,7 @@ def input_handler(msg: str) -> str:
     return user_input
 
 
-def while_throws_errors(commands: tuple[str, ...]) -> bool:
+def till_one_works(commands: tuple[str, ...]) -> bool:
     for c in commands:
         try:
             subprocess.run(c)
@@ -53,7 +55,7 @@ def while_throws_errors(commands: tuple[str, ...]) -> bool:
 
 def try_installing_glow() -> bool:
     if OsUtils.is_windows:
-        return while_throws_errors(
+        return till_one_works(
             (
                 "winget install charmbracelet.glow",
                 "choco install glow",
@@ -61,7 +63,7 @@ def try_installing_glow() -> bool:
             )
         )
     elif OsUtils.is_linux:
-        return while_throws_errors(
+        return till_one_works(
             (
                 'sudo mkdir -p /etc/apt/keyrings && curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg && echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list && sudo apt update && sudo apt install glow',
                 "pacman -S glow",
@@ -71,7 +73,7 @@ def try_installing_glow() -> bool:
                 "eopkg install glow",
             )
         )
-    return while_throws_errors(("brew install glow", "sudo port install glow"))
+    return till_one_works(("brew install glow", "sudo port install glow"))
 
 
 def get_piped_input() -> str:
@@ -137,7 +139,7 @@ def glow_print(text: str) -> None:
         )  # os._exit instead of sys.exit to avoid asyncio errors leaking cause running tasks don't respect sys.exit
 
 
-def load_conversation(gpt: ChatGPT) -> tuple[Conversation, bool]:
+def load_conversation(gpt: AsyncChatGPT) -> tuple[AsyncConversation, bool]:
     conversation_id = (
         Config.recent_conversation_id
         if SYS_ARGS.is_set("recent_conversation")
@@ -146,27 +148,26 @@ def load_conversation(gpt: ChatGPT) -> tuple[Conversation, bool]:
     if conversation_id == "":
         conversation_id = None
 
-    conversation = gpt.new_conversation(
-        model=Model.from_name(Config.model), id=conversation_id
-    )
+    conversation = gpt.create_new_conversation(model=Config.model)
+    conversation.conversation_id = conversation_id
     save_conversation = (
         conversation_id is not None or Config.save or SYS_ARGS.is_set("save")
     )
     return conversation, save_conversation
 
 
-async def fetch_prompt_response(prompt: str, conversation: Conversation) -> str:
+async def fetch_prompt_response(prompt: str, conversation: AsyncConversation) -> str:
     prompt_response = ""
     event = asyncio.Event()
     loading_task = asyncio.create_task(loading_animation(event))
-    async for prc in conversation.prompt(prompt):
+    async for resp_json in conversation.chat(prompt):
         if PRINT_WITH_GLOW:
-            prompt_response += prc.content
+            prompt_response += resp_json["content"]
             continue
         if not event.is_set():
             event.set()
             await loading_task
-        print(prc.content, end="", flush=True)
+        print(resp_json, end="", flush=True)
     if PRINT_WITH_GLOW:
         event.set()
         await loading_task
@@ -175,7 +176,7 @@ async def fetch_prompt_response(prompt: str, conversation: Conversation) -> str:
 
 async def interactive_mode(
     args: ArgParser,
-    conversation: Conversation,
+    conversation: AsyncConversation,
     is_first_iteration=True,
 ) -> None:
     if is_first_iteration:
@@ -188,13 +189,16 @@ async def interactive_mode(
     handle_coping_to_clip(args, prompt_response)
     if user_input := input_handler("> "):
         if user_input == "-d" or user_input == "--delete":
-            return await conversation.delete()
-        return await interactive_mode(
-            ArgParser(user_input.split(" ")), conversation, False
-        )
+            await conversation.delete()
+            return
+        await interactive_mode(ArgParser(user_input.split(" ")), conversation)
+        return
     if Config.delete:
-        return await conversation.delete()
-    await Config.update_json_async("recent_conversation_id", conversation.id)
+        await conversation.delete()
+        return
+    await Config.update_json_async(
+        "recent_conversation_id", conversation.conversation_id
+    )
 
 
 def handle_coping_to_clip(args: ArgParser, prompt_response: str) -> None:
@@ -210,14 +214,16 @@ def prepare_prompt(args: ArgParser) -> str:
 
 
 async def query_mode(
-    args: ArgParser, conversation: Conversation, save_conversation: bool
+    args: ArgParser, conversation: AsyncConversation, save_conversation: bool
 ) -> None:
     prompt = prepare_prompt(args)
     prompt_response = await fetch_prompt_response(prompt, conversation)
     if save_conversation:
-        Config.recent_conversation_id = cast(str, conversation.id)
+        Config.recent_conversation_id = cast(str, conversation.conversation_id)
         task = asyncio.create_task(
-            Config.update_json_async("recent_conversation_id", conversation.id)
+            Config.update_json_async(
+                "recent_conversation_id", conversation.conversation_id
+            )
         )
     else:
         task = asyncio.create_task(conversation.delete())
@@ -226,19 +232,24 @@ async def query_mode(
     await task
 
 
-async def gpt_coroutine(session: AsyncSession) -> None:
-    gpt = ChatGPT(session, Config.session_token)
+async def gpt_coroutine(gpt: AsyncChatGPT) -> None:
     try:
         async with gpt:
             conversation, save_conversation = load_conversation(gpt)
             if IS_QUERY_MODE:
-                return await query_mode(SYS_ARGS, conversation, save_conversation)
+                await query_mode(SYS_ARGS, conversation, save_conversation)
+                return
             await interactive_mode(SYS_ARGS, conversation)
 
-    except InvalidSessionToken:
-        check_repo_print(
-            "Invalid session token, the current one may have expired you need to make a new one"
-        )
+    except (UnexpectedResponseError, InvalidSessionToken) as e:
+        if isinstance(e, asyncio.CancelledError):
+            return
+        elif isinstance(e, InvalidSessionToken):
+            print_and_exit("Invalid session token, make a new one")
+        elif "token_expired" in e.message:
+            check_repo_print("Your session token has expired, make a new one")
+        else:
+            raise
 
 
 async def update_check_coroutine(session: AsyncSession) -> bool:
@@ -254,10 +265,11 @@ async def update_check_coroutine(session: AsyncSession) -> bool:
 
 
 async def async_main() -> None:
+    gpt = AsyncChatGPT(session_token=Config.session_token)
     session = AsyncSession(impersonate="chrome110")
     try:
         _, update_is_available = await asyncio.gather(
-            gpt_coroutine(session), update_check_coroutine(session)
+            gpt_coroutine(gpt), update_check_coroutine(session)
         )
         if update_is_available:
             print('\n\nUpdate available run "pip update sengpt" to install it')
@@ -268,6 +280,7 @@ async def async_main() -> None:
 def validate_session_token() -> None | NoReturn:
     if not Config.session_token:
         check_repo_print("Session token must be provided during initial configuration")
+
 
 
 def handle_static_args() -> None | NoReturn:
@@ -297,4 +310,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

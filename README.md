@@ -13,8 +13,6 @@
   <a href="#building-from-source">Building from source</a>
 </p>
 
- [![tests](https://github.com/SenZmaKi/Sengpt/actions/workflows/test.yml/badge.svg)](https://github.com/SenZmaKi/Sengpt/actions/workflows/test.yml)
-<img align="center" src="https://raw.githubusercontent.com/SenZmaKi/Sengpt/master/.github/images/example.png" alt="example">
 ## Installation
 
 Ensure you have [Python 3.11](https://www.python.org/downloads/release/python-3111) and [Glow](https://github.com/charmbracelet/glow) installed.

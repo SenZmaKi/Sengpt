@@ -14,7 +14,7 @@ keywords = [
   "chatgpt free",
 ]
 name = "sengpt"
-version = "0.1.0"
+version = "0.1.1"
 description = "ChatGPT in your terminal, no OpenAI API key required"
 authors = ["SenZmaKi <senzmaki@gmail.com>"]
 license = "GPL-3.0-only"
@@ -32,12 +32,7 @@ pyperclip = "^1.8.2"
 "Bug Tracker" = "https://github.com/SenZmaKi/Sengpt/issues"
 
 [tool.poetry.scripts]
-sengpt = "sengpt.sengpt:main"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.4.4"
-pytest-asyncio = "^0.23.3"
-ruff = "^0.1.13"
+sengpt = "sengpt.main:main"
 
 [build-system]
 requires = ["poetry-core"]
