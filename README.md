@@ -10,7 +10,8 @@
   <a href="#installation">Installation</a> •
   <a href="#configuration">Configuration</a> •
   <a href="#usage">Usage</a> •
-  <a href="#building-from-source">Building from source</a>
+  <a href="#building-from-source">Building from source</a> •
+  <a href="#support">Support</a>
 </p>
 
 <img align="center" src="https://raw.githubusercontent.com/SenZmaKi/Sengpt/master/.github/images/example.png" alt="example">
@@ -159,3 +160,7 @@ poetry build
 ```
 
 - The `tar` and `wheel` will be built at `Sengpt/dist`
+
+## Support
+- You can support the development of Sengpt through donations on [GitHub Sponsors](https://github.com/sponsors/SenZmaKi)
+- You can also star the github repository for other terminal enthusiasts and freedom fighters to know about it
