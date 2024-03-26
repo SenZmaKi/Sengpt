@@ -13,8 +13,9 @@
   <a href="#building-from-source">Building from source</a> •
   <a href="#support">Support</a>
 </p>
-
-<img align="center" src="https://raw.githubusercontent.com/SenZmaKi/Sengpt/master/.github/assets/demo.gif" alt="demo">
+<div align="center">
+<img src="https://raw.githubusercontent.com/SenZmaKi/Sengpt/master/.github/assets/demo.gif" alt="demo">
+</div>
 
 ## Installation
 
