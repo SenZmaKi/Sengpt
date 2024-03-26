@@ -14,7 +14,7 @@
   <a href="#support">Support</a>
 </p>
 
-<img align="center" src="https://raw.githubusercontent.com/SenZmaKi/Sengpt/master/.github/images/example.png" alt="example">
+<img align="center" src="https://raw.githubusercontent.com/SenZmaKi/Sengpt/master/.github/assets/demo.gif" alt="demo">
 
 ## Installation
 
@@ -40,15 +40,17 @@ pip install sengpt
 - Open the config file, run `sengpt --config_file` to see its location.
 - Add a field named `preconfigured_prompts` and set its value to key value pairs of prompt name and value e.g.,
 
-```json
+````json
 {
   "preconfigured_prompts": {
     "readme": "generate a README.md for this project",
     "expain": "briefly explain what this code does",
-    "refactor": "refactor this code to improve readability"
+    "refactor": "refactor this code to improve readability",
+    "generate_command": "No explanation. Output as literal string plain text i.e., echo Hello World instead of ```bash\\necho Hello World\\n```. Command as LITERAL string NO Markdown formatting. I want to be able to take your raw output and paste it into my terminal and it just works without me tinkering with it"
+    },
   }
 }
-```
+````
 
 - To pass the prompt run `sengpt --prompt_name` or `sengpt -pn`.
 - Warning!!! Make sure the short version of the prompt name doesn't clash with each other or with any of sengpt's default flags, i.e., a prompt name like `script_tags` will clash with `session_token` so every time you try and use it sengpt will think you want to set your session token.
@@ -91,7 +93,9 @@ Either `gpt-3.5` or `gpt-4` can be used, the default is `gpt-3.5`. `gpt-4` requi
 ```
 
 ### Username
+
 How your username appears in the conversation, the default is `You`.
+
 ```json
 {
   "username": "Sen"
@@ -162,5 +166,6 @@ poetry build
 - The `tar` and `wheel` will be built at `Sengpt/dist`
 
 ## Support
+
 - You can support the development of Sengpt through donations on [GitHub Sponsors](https://github.com/sponsors/SenZmaKi)
 - You can also star the github repository for other terminal enthusiasts and freedom fighters to know about it
