@@ -27,7 +27,7 @@ class ArgParser:
         return f"""
 {DESCRIPTION}
 
-Usage: senpgt [prompt] [options]
+Usage: sengpt [prompt] [options]
 
 -h, --help                    Show help message and exit                                                
 -v, --version                 Show the version information                                              

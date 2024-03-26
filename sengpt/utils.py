@@ -16,7 +16,7 @@ REPO_TAGS_URL = "https://api.github.com/repos/SenZmaKi/Sengpt/tags"
 # FIXME: Update to False on push
 DEBUG = False
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-VERSION = "0.1.0"
+VERSION = "0.1.2"
 V_VERSION = f"v{VERSION}"
 
 

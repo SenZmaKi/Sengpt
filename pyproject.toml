@@ -14,7 +14,7 @@ keywords = [
   "chatgpt free",
 ]
 name = "sengpt"
-version = "0.1.1"
+version = "0.1.2"
 description = "ChatGPT in your terminal, no OpenAI API key required"
 authors = ["SenZmaKi <senzmaki@gmail.com>"]
 license = "GPL-3.0-only"
