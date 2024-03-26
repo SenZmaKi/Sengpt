@@ -47,8 +47,7 @@ pip install sengpt
     "readme": "generate a README.md for this project",
     "expain": "briefly explain what this code does",
     "refactor": "refactor this code to improve readability",
-    "generate_command": "No explanation. Output as literal string plain text i.e., echo Hello World instead of ```bash\\necho Hello World\\n```. Command as LITERAL string NO Markdown formatting. I want to be able to take your raw output and paste it into my terminal and it just works without me tinkering with it"
-    },
+    "generate_command": "No explanation. Output as literal string plain text i.e., echo Hello World instead of ```bash\\necho Hello World\\n```. Command as LITERAL string NO Markdown formatting. I want to be able to take your raw output and paste it into my terminal and it just works without me tinkering with it. Generate a command that "
   }
 }
 ````
