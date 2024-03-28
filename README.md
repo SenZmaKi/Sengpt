@@ -3,7 +3,7 @@
 </h1>
 <p align="center">
   ChatGPT in your terminal, runs on  
-  <a href="https://github.com/Zai-Kun/reverse-engineered-chatgpt">re-gpt</a> so no OpenAI API key required
+  <a href="https://github.com/Zai-Kun/reverse-engineered-chatgpt">re_gpt</a> so no OpenAI API key required
 </p>
 <p align="center">
 <p align="center">
