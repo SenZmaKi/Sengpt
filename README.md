@@ -1,4 +1,5 @@
-# !!! Dead project since [re-gpt](https://github.com/Zai-Kun/reverse-engineered-chatgpt) is not maintained anymore !!!
+# !!! NOTICE !!!
+Dead project since [re-gpt](https://github.com/Zai-Kun/reverse-engineered-chatgpt) is not maintained anymore
 
 <h1 align="center">
  Sengpt
